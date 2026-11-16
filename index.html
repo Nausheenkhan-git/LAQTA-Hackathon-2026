@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The First Ahlan | QIC Visitor Insurance</title>
+<style>
+  :root {
+    --night: #231844;
+    --night-soft: #2f2259;
+    --pearl: #EBEBFF;
+    --pearl-dim: rgba(235, 235, 255, 0.68);
+    --maroon: #74112F;
+    --maroon-bright: #9a1a40;
+    --maroon-dark: #4d0a1f;
+    --tape: #c4122f;
+    --tape-dark: #a50e27;
+    --radius-lg: 28px;
+    --radius-md: 18px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    color: var(--pearl);
+    background-color: var(--night);
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(116, 17, 47, 0.45), transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(116, 17, 47, 0.30), transparent 50%),
+      radial-gradient(circle at 50% 120%, var(--night-soft), transparent 60%);
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1.5px 1.5px at 10% 30%, rgba(235,235,255,.5), transparent),
+      radial-gradient(1px 1px at 30% 70%, rgba(235,235,255,.4), transparent),
+      radial-gradient(1.5px 1.5px at 55% 15%, rgba(235,235,255,.45), transparent),
+      radial-gradient(1px 1px at 75% 45%, rgba(235,235,255,.35), transparent),
+      radial-gradient(1.5px 1.5px at 90% 20%, rgba(235,235,255,.5), transparent),
+      radial-gradient(1px 1px at 65% 85%, rgba(235,235,255,.3), transparent);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ---------- Floating Header Overlay ---------- */
+  header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10; /* Sits on top of the image */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 24px 32px;
+    background: linear-gradient(to bottom, rgba(23, 15, 48, 0.8) 0%, transparent 100%);
+  }
+
+  .brand img {
+    height: 40px;
+    width: auto;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .tagline {
+    font-size: 13px;
+    color: var(--pearl-dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .lang-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--pearl);
+    border: 1px solid rgba(235,235,255,.3);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
+    background: rgba(23, 15, 48, 0.4);
+    backdrop-filter: blur(4px);
+  }
+
+  .lang-toggle:hover { background: rgba(235,235,255,0.1); }
+  .lang-toggle span.active { color: #fff; font-weight: bold; }
+  .lang-toggle span.inactive { color: var(--pearl-dim); }
+  .lang-toggle .divider { color: var(--pearl-dim); font-size: 11px; }
+
+  /* ---------- Full-Width Hero Banner ---------- */
+  .hero-banner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 420px; /* Increased height slightly to account for the overlaid header */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid rgba(235, 235, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+
+  .hero-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+
+  /* ---------- Main Layout ---------- */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 40px 32px 80px;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  /* ---------- Hero Copy ---------- */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: rgba(116, 17, 47, 0.35);
+    border: 1px solid rgba(235, 235, 255, 0.15);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    margin-bottom: 24px;
+  }
+
+  .eyebrow .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #ff6b8f;
+    box-shadow: 0 0 10px #ff6b8f;
+  }
+
+  .headline-wrap { position: relative; margin-bottom: 22px; }
+
+  h1 {
+    font-size: clamp(38px, 5.2vw, 66px);
+    line-height: 1.06;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+    transition: opacity .35s ease, transform .35s ease, filter .35s ease;
+  }
+
+  h1.swap-out {
+    opacity: 0;
+    transform: translateY(-14px);
+    filter: blur(6px);
+  }
+
+  h1 .line1 { display: inline-block; position: relative; padding-bottom: 6px; }
+
+  h1 .line2 {
+    background: linear-gradient(90deg, var(--pearl), #ffc2d3);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .tape {
+    position: absolute;
+    left: -2%;
+    right: -2%;
+    bottom: -4px;
+    height: 9px;
+    display: flex;
+    gap: 6%;
+    transform: rotate(-1.5deg);
+    pointer-events: none;
+  }
+
+  .tape span {
+    flex: 1;
+    border-radius: 3px;
+    background: repeating-linear-gradient(-45deg, var(--tape) 0 10px, var(--tape-dark) 10px 20px);
+    box-shadow: 0 4px 8px rgba(0,0,0,.45);
+    transition: transform .7s cubic-bezier(.5,-0.3,.7,1), opacity .7s ease;
+  }
+
+  .tape.cut span:first-child { transform: translate(-60px, 60px) rotate(-25deg); opacity: 0; }
+  .tape.cut span:last-child  { transform: translate(60px, 60px) rotate(25deg); opacity: 0; }
+
+  .sub {
+    font-size: 20px;
+    color: var(--pearl-dim);
+    margin-bottom: 36px;
+    max-width: 500px;
+    transition: opacity .35s ease;
+  }
+
+  .sub.swap-out { opacity: 0; }
+  .sub strong { color: var(--pearl); }
+
+  .trust { display: flex; flex-wrap: wrap; gap: 14px; }
+
+  .chip {
+    padding: 12px 18px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(145deg, rgba(47,34,89,.9), rgba(28,19,56,.9));
+    border: 1px solid rgba(235,235,255,.08);
+    font-size: 14px;
+    box-shadow: 0 10px 22px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08);
+    transition: border-color .4s ease, box-shadow .4s ease;
+  }
+
+  .chip b { display: block; font-size: 18px; margin-bottom: 2px; }
+
+  .chip.highlight {
+    border-color: rgba(255, 194, 211, .55);
+    box-shadow: 0 10px 22px rgba(0,0,0,.35), 0 0 0 3px rgba(116,17,47,.6), inset 0 1px 0 rgba(255,255,255,.08);
+  }
+
+  /* ---------- 3D Shield ---------- */
+  .shield-wrap {
+    position: relative;
+    height: 100px;
+    margin-bottom: 20px;
+  }
+
+  .shield {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 90px;
+    height: 106px;
+    background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.35), transparent 40%), linear-gradient(160deg, var(--maroon-bright), var(--maroon) 55%, var(--maroon-dark));
+    clip-path: polygon(50% 0, 100% 14%, 100% 55%, 50% 100%, 0 55%, 0 14%);
+    filter: drop-shadow(0 18px 24px rgba(0,0,0,.55));
+    animation: float 5s ease-in-out infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .shield img {
+    width: 60%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .ribbon {
+    position: absolute;
+    left: 55px;
+    top: 45px;
+    width: 180px;
+    height: 14px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--maroon-bright), var(--maroon), transparent);
+    transform: rotate(-8deg);
+    box-shadow: 0 8px 16px rgba(0,0,0,.35);
+    opacity: .85;
+    transition: width .8s ease, transform .8s ease;
+  }
+
+  .personalized .ribbon { width: 280px; transform: rotate(-4deg); }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-10px) rotate(2deg); }
+  }
+
+  /* ---------- Quiz Card ---------- */
+  .card {
+    position: relative;
+    padding: 36px 34px 32px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(160deg, rgba(53, 39, 99, 0.95), rgba(30, 20, 60, 0.97));
+    border: 1px solid rgba(235, 235, 255, 0.10);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.55), 0 12px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+    transform: perspective(1400px) rotateY(-4deg) rotateX(2deg);
+    transition: transform .5s ease;
+  }
+
+  .card:hover { transform: perspective(1400px) rotateY(0) rotateX(0); }
+
+  .card::before {
+    content: "";
+    position: absolute;
+    top: -1px; left: 40px; right: 40px;
+    height: 4px;
+    border-radius: 0 0 6px 6px;
+    background: linear-gradient(90deg, transparent, var(--maroon-bright), transparent);
+  }
+
+  .card h2 { font-size: 24px; margin-bottom: 6px; }
+  .card .hint { color: var(--pearl-dim); font-size: 14px; margin-bottom: 26px; }
+
+  fieldset { border: none; margin-bottom: 22px; }
+
+  legend {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+
+  legend .num {
+    display: grid;
+    place-items: center;
+    width: 26px; height: 26px;
+    border-radius: 9px;
+    font-size: 13px;
+    background: linear-gradient(145deg, var(--maroon-bright), var(--maroon-dark));
+    box-shadow: 0 4px 10px rgba(0,0,0,.4);
+  }
+
+  .options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .options.three { grid-template-columns: repeat(3, 1fr); }
+
+  .option input { position: absolute; opacity: 0; pointer-events: none; }
+
+  .option span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 10px 12px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 14px;
+    cursor: pointer;
+    background: linear-gradient(145deg, #2c2054, #1d1440);
+    border: 1px solid rgba(235,235,255,.08);
+    box-shadow: 0 6px 0 #120b26, 0 10px 18px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.07);
+    transition: transform .15s ease, box-shadow .15s ease, background .2s ease;
+    user-select: none;
+  }
+
+  .option span:hover { transform: translateY(-2px); }
+
+  .option input:checked + span {
+    background: linear-gradient(145deg, var(--maroon-bright), var(--maroon));
+    border-color: rgba(255, 194, 211, .35);
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 var(--maroon-dark), 0 6px 14px rgba(116,17,47,.55), inset 0 1px 0 rgba(255,255,255,.18);
+  }
+
+  .option input:focus-visible + span { outline: 2px solid var(--pearl); outline-offset: 3px; }
+
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 19px;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-align: center;
+    text-decoration: none;
+    color: var(--pearl);
+    border: none;
+    border-radius: 18px;
+    cursor: pointer;
+    transition: transform .12s ease, box-shadow .12s ease, opacity .3s ease, filter .2s ease;
+  }
+
+  .btn-personalize {
+    background: linear-gradient(180deg, #3b2c72, #2a1e57);
+    border: 1px solid rgba(235,235,255,.18);
+    box-shadow: 0 8px 0 #150d2e, 0 16px 28px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.15);
+  }
+
+  .btn-personalize:disabled { opacity: .45; cursor: not-allowed; }
+  .btn-personalize:not(:disabled):hover { filter: brightness(1.12); }
+  .btn-personalize:not(:disabled):active {
+    transform: translateY(6px);
+    box-shadow: 0 2px 0 #150d2e, 0 6px 14px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.15);
+  }
+
+  .status {
+    min-height: 20px;
+    margin: 14px 0 0;
+    text-align: center;
+    font-size: 13px;
+    color: var(--pearl-dim);
+  }
+
+  .quote-slot {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .55s ease;
+  }
+
+  .quote-slot > div { overflow: hidden; }
+  .quote-slot.show { grid-template-rows: 1fr; }
+
+  .btn-quote {
+    margin-top: 18px;
+    margin-bottom: 10px;
+    background: linear-gradient(180deg, var(--maroon-bright), var(--maroon));
+    box-shadow: 0 8px 0 var(--maroon-dark), 0 18px 34px rgba(116, 17, 47, 0.6), inset 0 1px 0 rgba(255,255,255,.25);
+    opacity: 0;
+    transform: translateY(16px) scale(.96);
+  }
+
+  .quote-slot.show .btn-quote {
+    opacity: 1;
+    transform: none;
+    transition: opacity .5s ease .25s, transform .5s cubic-bezier(.2,1.4,.4,1) .25s;
+  }
+
+  .quote-slot.show .btn-quote:hover { filter: brightness(1.08); }
+  .quote-slot.show .btn-quote:active {
+    transform: translateY(6px);
+    box-shadow: 0 2px 0 var(--maroon-dark), 0 8px 16px rgba(116, 17, 47, 0.5), inset 0 1px 0 rgba(255,255,255,.25);
+  }
+
+  .fine { text-align: center; font-size: 12px; color: var(--pearl-dim); }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 0 24px 36px;
+    font-size: 12px;
+    color: var(--pearl-dim);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px) {
+    main { grid-template-columns: 1fr; gap: 40px; padding-top: 8px; }
+    .card, .card:hover { transform: none; }
+    .tagline { display: none; }
+  }
+
+  @media (max-width: 480px) {
+    header, main { padding-left: 20px; padding-right: 20px; }
+    .card { padding: 28px 20px 24px; }
+    .options.three { grid-template-columns: 1fr; }
+    .hero-banner { height: 250px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shield { animation: none; }
+    *, *::before, *::after { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header is now absolute and sits ON TOP of the hero image -->
+<header>
+  <div class="brand">
+    <img src="https://qic-group.com/wp-content/uploads/2025/10/QIC-Logo-Maroon.png" alt="QIC Logo">
+  </div>
+  <div class="header-right">
+    <div class="tagline">The First Ahlan</div>
+    <div class="lang-toggle">
+      <span class="active">EN</span>
+      <span class="divider">|</span>
+      <span class="inactive">عربي</span>
+    </div>
+  </div>
+</header>
+
+<!-- Full-Width Hero Banner -->
+<div class="hero-banner">
+ <img src="https://images.unsplash.com/photo-1530521954074-e64f6810b32d?q=80&w=1200&auto=format&fit=crop" alt="Airport Terminal" style="width: 100%; height: 100%; object-fit: cover;">
+</div>
+
+<main id="page">
+  <section class="hero">
+    <div class="shield-wrap" aria-hidden="true">
+      <div class="ribbon"></div>
+      <div class="shield">
+        <img src="qic-logo.png" alt="QIC Logo">
+      </div>
+    </div>
+
+    <div class="eyebrow"><span class="dot"></span><span id="eyebrow-text">Mandatory for every visitor visa to Qatar</span></div>
+
+    <div class="headline-wrap">
+      <h1 id="headline" aria-live="polite">
+        <span class="line1" id="line1">Cut the red tape.<span class="tape" id="tape" aria-hidden="true"><span></span><span></span></span></span><br>
+        <span class="line2" id="line2">Keep the welcome.</span>
+      </h1>
+    </div>
+
+    <p class="sub" id="sub"><strong>QIC Visitor Insurance.</strong> Done in under 2 minutes.</p>
+
+    <div class="trust">
+      <div class="chip" id="chip-fast"><b>&lt; 2 min</b>Fully online</div>
+      <div class="chip" id="chip-docs"><b>0 documents</b>Nothing to upload</div>
+      <div class="chip" id="chip-age"><b>No age limit</b>Parents welcome</div>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="quiz-title">
+    <h2 id="quiz-title">Who are you welcoming?</h2>
+    <p class="hint">Answer three quick questions and we'll tailor this page for you.</p>
+
+    <form id="quiz" novalidate>
+      <fieldset>
+        <legend><span class="num">1</span>Who is coming to Qatar?</legend>
+        <div class="options">
+          <label class="option"><input type="radio" name="who" value="parents" checked><span>Bringing parents</span></label>
+          <label class="option"><input type="radio" name="who" value="spouse"><span>Bringing a spouse</span></label>
+          <label class="option"><input type="radio" name="who" value="tourist"><span>I'm a tourist</span></label>
+          <label class="option"><input type="radio" name="who" value="family"><span>Siblings or friends</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="num">2</span>How long is the stay?</legend>
+        <div class="options three">
+          <label class="option"><input type="radio" name="stay" value="short" checked><span>Up to 1 month</span></label>
+          <label class="option"><input type="radio" name="stay" value="mid"><span>1–3 months</span></label>
+          <label class="option"><input type="radio" name="stay" value="long"><span>Longer</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="num">3</span>What matters most?</legend>
+        <div class="options three">
+          <label class="option"><input type="radio" name="priority" value="fast" checked><span>Speed</span></label>
+          <label class="option"><input type="radio" name="priority" value="seniors"><span>Cover for elders</span></label>
+          <label class="option"><input type="radio" name="priority" value="price"><span>Best price</span></label>
+        </div>
+      </fieldset>
+
+      <button type="submit" class="btn btn-personalize" id="personalize">Personalize</button>
+      <p class="status" id="status" aria-live="polite">Ready when you are.</p>
+
+      <div class="quote-slot" id="quote-slot">
+        <div>
+          <a href="https://qic.online/" class="btn btn-quote" id="quote" tabindex="-1">Sign Up Now</a>
+          <p class="fine">Nothing is charged until you review your policy.</p>
+        </div>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer>© QIC · The First Ahlan · Cut the red tape. Keep the welcome.</footer>
+
+<script>
+  const HEADLINES = {
+    parents: { line1: "Ahlan to your parents.", line2: "We've got them covered." },
+    spouse:  { line1: "Ahlan to your partner.", line2: "Zero red tape." },
+    tourist: { line1: "Ahlan to Qatar.",        line2: "Safe travels, no hassle." },
+    family:  { line1: "Ahlan to your family.",  line2: "Zero red tape." }
+  };
+
+  const EYEBROWS = {
+    parents: "Personalized for your parents' visit",
+    spouse:  "Personalized for your partner's visit",
+    tourist: "Personalized for your trip to Qatar",
+    family:  "Personalized for your family's visit"
+  };
+
+  const STAY_TEXT = {
+    short: "Cover for a stay of up to 1 month.",
+    mid:   "Cover for a 1–3 month stay.",
+    long:  "Cover that extends with the visa."
+  };
+
+  const PRIORITY_TEXT = {
+    fast:    "Done online in under 2 minutes.",
+    seniors: "No age limit, so every generation is covered.",
+    price:   "Mandatory cover at the basic visitor rate."
+  };
+
+  const PRIORITY_CHIP = { fast: "chip-fast", seniors: "chip-age", price: "chip-docs" };
+
+  const page       = document.getElementById("page");
+  const form       = document.getElementById("quiz");
+  const headline   = document.getElementById("headline");
+  const line1      = document.getElementById("line1");
+  const line2      = document.getElementById("line2");
+  const tape       = document.getElementById("tape");
+  const sub        = document.getElementById("sub");
+  const eyebrow    = document.getElementById("eyebrow-text");
+  const btn        = document.getElementById("personalize");
+  const status     = document.getElementById("status");
+  const quoteSlot  = document.getElementById("quote-slot");
+  const quoteBtn   = document.getElementById("quote");
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const d = new FormData(form);
+    const who = d.get("who");
+    const stay = d.get("stay");
+    const priority = d.get("priority");
+
+    const h = HEADLINES[who];
+
+    tape.classList.add("cut");
+    headline.classList.add("swap-out");
+    sub.classList.add("swap-out");
+
+    setTimeout(() => {
+      line1.innerHTML = h.line1 + '<span class="tape cut" id="tape" aria-hidden="true"><span></span><span></span></span>';
+      line2.textContent = h.line2;
+      sub.innerHTML = "<strong>QIC Visitor Insurance.</strong> " + STAY_TEXT[stay] + " " + PRIORITY_TEXT[priority];
+      eyebrow.textContent = EYEBROWS[who];
+
+      headline.classList.remove("swap-out");
+      sub.classList.remove("swap-out");
+    }, 380);
+
+    document.querySelectorAll(".chip").forEach(c => c.classList.remove("highlight"));
+    document.getElementById(PRIORITY_CHIP[priority]).classList.add("highlight");
+
+    page.classList.add("personalized");
+    quoteSlot.classList.add("show");
+    quoteBtn.removeAttribute("tabindex");
+
+    btn.textContent = "Personalized";
+    btn.disabled = true;
+    status.textContent = "Your page is ready. Sign up below.";
+
+    if (window.innerWidth <= 900) {
+      document.querySelector(".hero").scrollIntoView({ behavior: "smooth" });
+    }
+  });
+</script>
+</body>
+</html>

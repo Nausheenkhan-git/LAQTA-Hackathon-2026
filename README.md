@@ -25,3 +25,4 @@
 1. Download the entire folder.
 2. Double-click `index.html` to open it in your browser.
 3. Answer the 3 questions in the quiz and click "Personalize" to see the AI logic in action.
+4. Watch the Hero video 
